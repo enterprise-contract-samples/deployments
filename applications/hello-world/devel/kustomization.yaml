@@ -1,0 +1,10 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../base
+
+images:
+  - name: quay.io/enterprise-contract-samples/hello-world:latest
+    digest: sha256:5c6c0d2f80ad4ba356fb717155525789a6227954834ce8682611f7abf6f26bf2
+

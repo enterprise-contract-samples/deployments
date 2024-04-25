@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  labels:
+    app: hello-world
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-world
+        image: quay.io/enterprise-contract-samples/hello-world:latest@sha256:5c6c0d2f80ad4ba356fb717155525789a6227954834ce8682611f7abf6f26bf2
+        ports:
+        - containerPort: 8080

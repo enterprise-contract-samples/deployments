@@ -1,0 +1,27 @@
+---
+identity:
+  subjectRegExp: '.*'
+  issuer: https://token.actions.githubusercontent.com
+sources:
+
+  - policy:
+      - github.com/enterprise-contract/ec-policies//policy/lib
+      - github.com/enterprise-contract/ec-policies//policy/release
+    config:
+      include:
+        - '@github'
+    data: []
+    ruleData:
+      allowed_gh_workflow_repos:
+        - enterprise-contract-samples/hello-world
+      allowed_gh_workflow_refs:
+        - refs/heads/main
+      allowed_gh_workflow_triggers:
+        - push
+
+  - policy:
+      - github.com/enterprise-contract/ec-policies//policy/lib
+      - github.com/enterprise-contract-samples/deployments/policies/rules
+    ruleData:
+      allowed_builders:
+        - https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v1.10.0
