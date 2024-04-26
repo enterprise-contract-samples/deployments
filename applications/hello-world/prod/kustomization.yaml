@@ -6,5 +6,5 @@ resources:
 
 images:
   - name: quay.io/enterprise-contract-samples/hello-world:latest
-    digest: sha256:5c6c0d2f80ad4ba356fb717155525789a6227954834ce8682611f7abf6f26bf2
+    digest: sha256:f0454363b2fab3852ae1d8f88ad3bda02b0e41a53772b8ac787e279a4bd966b2
 
