@@ -42,11 +42,13 @@ deny contains result if {
 }
 
 _builder_id_errors contains error if {
+    allowed_builders := lib.rule_data("allowed_builders")
+
     some attestation in input.attestations
     attestation.statement.predicateType == "https://slsa.dev/provenance/v0.2"
     builder_id := object.get(attestation.statement, ["predicate", "builder", "id"], "MISSING")
-    not builder_id in _allowed_builders
-    error := sprintf("Builder ID %q is not one of the allowed values: %s", [builder_id, _allowed_builders])
+    not builder_id in allowed_builders
+    error := sprintf("Builder ID %q is not one of the allowed values: %s", [builder_id, allowed_builders])
 }
 
 # METADATA
@@ -66,21 +68,17 @@ _identity_errors contains error if {
 }
 
 _identity_errors contains error if {
+    allowed_builders := lib.rule_data("allowed_builders")
+
     some identity in _identities
-    not identity in _allowed_builders
-    error := sprintf("Identity %q is not one of the allowed identities: %s", [identity, _allowed_builders])
+    not identity in allowed_builders
+    error := sprintf("Identity %q is not one of the allowed identities: %s", [identity, allowed_builders])
 }
 
 _identities contains identity if {
-    some attestation in _provenance_attestations
+    some attestation in input.attestations
+    attestation.statement.predicateType == "https://slsa.dev/provenance/v0.2"
     some signature in attestation.signatures
     some cert in crypto.x509.parse_certificates(signature.certificate)
     some identity in cert.URIStrings
 }
-
-_provenance_attestations := [attestation |
-    some attestation in input.attestations
-    attestation.statement.predicateType == "https://slsa.dev/provenance/v0.2"
-]
-
-_allowed_builders := lib.rule_data("allowed_builders")
